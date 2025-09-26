@@ -5,6 +5,7 @@ import AppointmentTable from './components/Table/AppointmentTable';
 import { appointments } from './data/appointments';
 import useAppointments from './components/hooks/useAppointment';
 import { useFilters } from './components/FiltersContext/FiltersContext';
+import { useState } from 'react';
 
 function App() {
   const {
@@ -33,12 +34,12 @@ function App() {
     searchQuery,
     dateRange
   );
-
+  const [hideSiderbar, setHideSidebar] = useState(false);
   return (
     <Box display="flex">
-      <Sidebar />
+      {!hideSiderbar && <Sidebar />}
       <Box flex={1} bgcolor="#f9fafc" minHeight="100vh">
-        <TopNav />
+        <TopNav setHideSidebar={setHideSidebar} />
         <AppointmentTable data={sortedAppointments} />
       </Box>
     </Box>

@@ -17,7 +17,7 @@ const dates = [
   { label: '28 Fri', value: 28, count: 9999 },
 ];
 
-const TopNav = () => {
+const TopNav = ({ setHideSidebar }: { setHideSidebar: (prev: boolean) => boolean }) => {
   const {
     searchQuery,
     setSearchQuery,
@@ -57,7 +57,11 @@ const TopNav = () => {
       <Box display="flex" alignItems="center" justifyContent="space-between">
         {/* Back + Title */}
         <Box display="flex" alignItems="center" gap={1}>
-          <IconButton edge="start" sx={{ ml: 2 }}>
+          <IconButton
+            edge="start"
+            sx={{ ml: 2 }}
+            onClick={() => setHideSidebar((prev) => !prev)}
+          >
             <ArrowBackIosNewIcon fontSize="small" />
           </IconButton>
           <Typography variant="h6" fontWeight="bold">
