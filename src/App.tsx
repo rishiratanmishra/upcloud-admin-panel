@@ -7,9 +7,17 @@ import useAppointments from './components/hooks/useAppointment';
 import { useFilters } from './components/FiltersContext/FiltersContext';
 
 function App() {
-  const { 
-    status, city, state, appointmentTypes, paymentMethods,
-    gender, sortBy, sortOrder, searchQuery, dateRange 
+  const {
+    status,
+    city,
+    state,
+    appointmentTypes,
+    paymentMethods,
+    gender,
+    sortBy,
+    sortOrder,
+    searchQuery,
+    dateRange,
   } = useFilters();
 
   const sortedAppointments = useAppointments(
@@ -36,6 +44,5 @@ function App() {
     </Box>
   );
 }
-
 
 export default App;

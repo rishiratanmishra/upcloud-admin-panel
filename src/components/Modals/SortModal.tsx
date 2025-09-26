@@ -17,7 +17,6 @@ interface SortModalProps {
   open: boolean;
   onClose: () => void;
 
-  // Current App-level sort order & gender
   sortOrder: 'asc' | 'desc';
   onChangeSortOrder: (order: 'asc' | 'desc') => void;
 
@@ -33,11 +32,9 @@ const SortModal: React.FC<SortModalProps> = ({
   gender,
   onChangeGender,
 }) => {
-  // Local temp state for modal editing
   const [tempSortOrder, setTempSortOrder] = useState<'asc' | 'desc'>(sortOrder);
   const [tempGender, setTempGender] = useState<'Male' | 'Female' | undefined>(gender);
 
-  // Sync modal state when modal opens
   useEffect(() => {
     if (open) {
       setTempSortOrder(sortOrder);
@@ -45,14 +42,12 @@ const SortModal: React.FC<SortModalProps> = ({
     }
   }, [open, sortOrder, gender]);
 
-  // Apply changes to App state
   const handleApply = () => {
     onChangeSortOrder(tempSortOrder);
     onChangeGender(tempGender);
     onClose();
   };
 
-  // Reset to defaults
   const handleReset = () => {
     setTempSortOrder('asc');
     setTempGender(undefined);
