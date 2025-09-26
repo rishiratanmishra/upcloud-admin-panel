@@ -1,9 +1,10 @@
 import React from 'react';
-import { Box, IconButton, Tabs, Tab, Typography, Button } from '@mui/material';
+import { Box, IconButton, Typography } from '@mui/material';
 import {
   ArrowBackIosNew,
   ArrowForwardIos,
   CalendarToday,
+  DownloadOutlined,
 } from '@mui/icons-material';
 
 interface DateNavRowProps {
@@ -19,52 +20,68 @@ const DateNavRow: React.FC<DateNavRowProps> = ({
   dates,
   onCalendarClick,
 }) => {
+  const selectedIndex = dates.findIndex((d) => d.value === selectedDate);
+
+  const visibleDates = dates.slice(
+    Math.max(0, selectedIndex - 3),
+    Math.min(dates.length, selectedIndex + 4)
+  );
+
   return (
     <Box display="flex" alignItems="center" justifyContent="space-between">
-      {/* Date Navigation */}
-      <Box display="flex" alignItems="center" gap={1}>
-        <IconButton>
-          <ArrowBackIosNew fontSize="small" />
-        </IconButton>
+      {/* Left: Prev/Next buttons + Dates */}
+      <Box display="flex" alignItems="center" gap={2}>
+        {/* Prev + Next buttons together */}
+        <Box display="flex" alignItems="center">
+          <IconButton
+            onClick={() => {
+              if (selectedIndex > 0)
+                onChangeDate(dates[selectedIndex - 1].value);
+            }}
+          >
+            <ArrowBackIosNew fontSize="small" />
+          </IconButton>
+          <IconButton
+            onClick={() => {
+              if (selectedIndex < dates.length - 1)
+                onChangeDate(dates[selectedIndex + 1].value);
+            }}
+          >
+            <ArrowForwardIos fontSize="small" />
+          </IconButton>
+        </Box>
 
-        <Tabs
-          value={selectedDate}
-          onChange={(_, value) => onChangeDate(value)}
-          variant="scrollable"
-          scrollButtons="auto"
-          sx={{
-            '& .MuiTab-root': {
-              minWidth: 80,
-              fontWeight: 'bold',
-              textTransform: 'none',
-            },
-          }}
-        >
-          {dates.map((d) => (
-            <Tab
-              key={d.value}
-              value={d.value}
-              label={
-                <Box display="flex" alignItems="center" gap={1}>
-                  <Typography variant="body2">{d.label}</Typography>
-                  <Box px={1} py={0.3} bgcolor="#f0f0f0" borderRadius={1}>
-                    <Typography
-                      variant="caption"
-                      fontWeight="bold"
-                      color="text.secondary"
-                    >
-                      {d.count.toLocaleString()}
-                    </Typography>
-                  </Box>
-                </Box>
-              }
-            />
-          ))}
-        </Tabs>
-
-        <IconButton>
-          <ArrowForwardIos fontSize="small" />
-        </IconButton>
+        {/* Render 7 date items */}
+        <Box display="flex" gap={2}>
+          {visibleDates.map((d) => {
+            const isSelected = d.value === selectedDate;
+            return (
+              <Box
+                key={d.value}
+                onClick={() => onChangeDate(d.value)}
+                sx={{
+                  cursor: 'pointer',
+                  textAlign: 'center',
+                }}
+              >
+                <Typography variant="body2" component="span" fontSize={16}>
+                  {d.label}
+                </Typography>
+                <Typography
+                  variant="caption"
+                  component="span"
+                  fontSize={16}
+                  sx={{ ml: 0.5, px: 0.5, bgcolor: '#f0f0f5', borderRadius: 1 }}
+                >
+                  {d.count.toLocaleString()}
+                </Typography>
+                {isSelected && (
+                  <Box mt={0.3} height="2px" bgcolor="teal" borderRadius={1} />
+                )}
+              </Box>
+            );
+          })}
+        </Box>
       </Box>
 
       {/* Calendar + Download */}
@@ -72,9 +89,23 @@ const DateNavRow: React.FC<DateNavRowProps> = ({
         <IconButton onClick={onCalendarClick}>
           <CalendarToday />
         </IconButton>
-        <Button variant="outlined" startIcon={<ArrowForwardIos />}>
+        <Box
+          component="button"
+          style={{
+            border: '1px solid black',
+            padding: '4px 12px',
+            borderRadius: '6px',
+            background: 'white',
+            color: 'black',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+          }}
+        >
+          <DownloadOutlined fontSize="small" />
           Download Report
-        </Button>
+        </Box>
       </Box>
     </Box>
   );
