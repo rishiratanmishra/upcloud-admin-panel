@@ -168,9 +168,9 @@ const FilterModal: React.FC<Props> = ({
             onChange={(e) => setTempState(e.target.value)}
             label="State"
           >
-            {['Maharashtra', 'Karnataka', 'Delhi'].map((s) => (
+            {['MAH', 'KER', 'Delhi'].map((s) => (
               <MenuItem key={s} value={s}>
-                {s}
+                {s==='MAH' ? 'Maharashtra' : s==='KER' ? 'Kerala' : 'Delhi'}
               </MenuItem>
             ))}
           </Select>
